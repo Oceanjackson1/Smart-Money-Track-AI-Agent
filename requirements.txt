@@ -1,0 +1,10 @@
+playwright
+playwright-stealth
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+aiosqlite
+httpx
+apscheduler
+python-dotenv
+python-telegram-bot>=20.0

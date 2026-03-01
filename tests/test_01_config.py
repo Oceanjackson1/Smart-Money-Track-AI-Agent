@@ -18,6 +18,10 @@ def test_settings_default_values():
     assert settings.WAF_TOKEN_REFRESH_MINUTES == 10
     assert settings.REQUEST_DELAY_MIN == 1.0
     assert settings.REQUEST_DELAY_MAX == 3.0
+    assert settings.AGENT_HEARTBEAT_ENABLED is True
+    assert settings.AGENT_HEARTBEAT_ID == "smart-money-track-ai-agent-service"
+    assert settings.AGENT_HEARTBEAT_NAME == "Smart Money AI Agent"
+    assert settings.AGENT_HEARTBEAT_ROLE == "product"
     print("  [PASS] 默认配置值全部正确")
 
 
@@ -30,6 +34,7 @@ def test_settings_types():
     assert isinstance(settings.DATABASE_URL, str)
     assert isinstance(settings.BINANCE_BASE_URL, str)
     assert isinstance(settings.TRADER_LIST_API, str)
+    assert isinstance(settings.AGENT_HEARTBEAT_TIMEOUT_SECONDS, float)
     print("  [PASS] 配置类型全部正确")
 
 
@@ -51,3 +56,13 @@ def test_webhook_urls_empty_by_default():
     assert isinstance(settings.WEBHOOK_URLS, list)
     # 默认没设置 WEBHOOK_URLS 环境变量, 应为空列表
     print(f"  [PASS] Webhook URLs: {settings.WEBHOOK_URLS} (expected empty or configured)")
+
+
+def test_heartbeat_settings_present():
+    """验证 Pixel Office 心跳配置已加载。"""
+    from config import settings
+
+    assert settings.AGENT_HEARTBEAT_URL.endswith("/rest/v1/agents")
+    assert settings.AGENT_HEARTBEAT_API_KEY.startswith("sb_publishable_")
+    assert settings.AGENT_HEARTBEAT_ROLE_LABEL_ZH == "聪明钱数据分析师"
+    print("  [PASS] Heartbeat settings loaded")

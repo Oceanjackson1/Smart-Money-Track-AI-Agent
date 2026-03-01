@@ -6,6 +6,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _get_bool_env(name: str, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 class Settings:
     POLL_INTERVAL_MINUTES: int = int(os.getenv("POLL_INTERVAL_MINUTES", "5"))
     HISTORY_POLL_INTERVAL_MINUTES: int = int(os.getenv("HISTORY_POLL_INTERVAL_MINUTES", "30"))
@@ -37,6 +44,30 @@ class Settings:
     DEEPSEEK_MODEL: str = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
     DEEPSEEK_MAX_TOKENS: int = int(os.getenv("DEEPSEEK_MAX_TOKENS", "2048"))
     CONVERSATION_WINDOW: int = int(os.getenv("CONVERSATION_WINDOW", "20"))
+
+    # Pixel Office 心跳
+    AGENT_HEARTBEAT_ENABLED: bool = _get_bool_env("AGENT_HEARTBEAT_ENABLED", True)
+    AGENT_HEARTBEAT_URL: str = os.getenv(
+        "AGENT_HEARTBEAT_URL",
+        "https://ewsrmznakzzkkcwftgjd.supabase.co/rest/v1/agents",
+    )
+    AGENT_HEARTBEAT_API_KEY: str = os.getenv(
+        "AGENT_HEARTBEAT_API_KEY",
+        "sb_publishable_pbt93uIf5oX9xN1taOVJUQ_mCQve3M4",
+    )
+    AGENT_HEARTBEAT_ID: str = os.getenv(
+        "AGENT_HEARTBEAT_ID",
+        "smart-money-track-ai-agent-service",
+    )
+    AGENT_HEARTBEAT_NAME: str = os.getenv("AGENT_HEARTBEAT_NAME", "Smart Money AI Agent")
+    AGENT_HEARTBEAT_ROLE: str = os.getenv("AGENT_HEARTBEAT_ROLE", "product")
+    AGENT_HEARTBEAT_ROLE_LABEL_ZH: str = os.getenv(
+        "AGENT_HEARTBEAT_ROLE_LABEL_ZH",
+        "聪明钱数据分析师",
+    )
+    AGENT_HEARTBEAT_TIMEOUT_SECONDS: float = float(
+        os.getenv("AGENT_HEARTBEAT_TIMEOUT_SECONDS", "5"),
+    )
 
     # 反检测
     REQUEST_DELAY_MIN: float = 1.0
